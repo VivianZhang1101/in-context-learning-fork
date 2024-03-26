@@ -40,7 +40,7 @@ def get_model_from_run(run_path, step=-1, only_conf=False):
 
 def eval_batch(model, task_sampler, xs, xs_p=None):
     task = task_sampler()
-    if torch.cuda.is_available() and model.name.split("_")[0] in ["gpt2", "lstm"]:
+    if torch.cuda.is_available() and model.name.split("_")[0] in ["gpt2", "lstm","single"]:
         device = "cuda"
     else:
         device = "cpu"

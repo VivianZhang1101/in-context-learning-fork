@@ -1,5 +1,5 @@
 wandb:
     project: in-context-training
-    entity: your-entity
+    entity: northwestern-in-context-learning
     notes:
     log_every_steps: 100

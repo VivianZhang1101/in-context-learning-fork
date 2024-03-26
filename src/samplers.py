@@ -34,25 +34,30 @@ def sample_transformation(eigenvalues, normalize=False):
 
 
 class GaussianSampler(DataSampler):
-    def __init__(self, n_dims, bias=None, scale=None):
+    def __init__(self, n_dims, w1=0.9, w2=0.1, bias=None, scale=None):
         super().__init__(n_dims)
         self.bias = bias
         self.scale = scale
-
+        self.w1 = w1
+        self.w2 = w2
+        
     def sample_xs(self, n_points, b_size, n_dims_truncated=None, seeds=None):
-        if seeds is None:
-            xs_b = torch.randn(b_size, n_points, self.n_dims)
-        else:
-            xs_b = torch.zeros(b_size, n_points, self.n_dims)
-            generator = torch.Generator()
+        xs_b = torch.zeros(b_size, n_points, self.n_dims)
+
+        if seeds is not None:
             assert len(seeds) == b_size
-            for i, seed in enumerate(seeds):
-                generator.manual_seed(seed)
-                xs_b[i] = torch.randn(n_points, self.n_dims, generator=generator)
-        if self.scale is not None:
-            xs_b = xs_b @ self.scale
-        if self.bias is not None:
-            xs_b += self.bias
+            generator = torch.Generator()
+
+        for i in range(b_size):
+            if seeds is not None:
+                generator.manual_seed(seeds[i])
+
+            for j in range(n_points):
+                sample1 = (torch.randn(self.n_dims, generator=generator) - 2) * self.w1 if seeds else (torch.randn(self.n_dims) - 2) * self.w1
+                sample2 = (torch.randn(self.n_dims, generator=generator) + 2) * self.w2 if seeds else (torch.randn(self.n_dims) + 2) * self.w2
+                xs_b[i, j] = sample1 + sample2
+
         if n_dims_truncated is not None:
             xs_b[:, :, n_dims_truncated:] = 0
+
         return xs_b
