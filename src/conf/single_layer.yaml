@@ -1,0 +1,16 @@
+inherit: 
+    - base_single_layer.yaml
+
+training:
+    task: single_layer
+    curriculum:
+        points:
+            start: 51
+            end: 51
+            inc: 2
+            interval: 2000
+
+out_dir: ../models/single_layer
+
+wandb:
+    name: "single_layer"

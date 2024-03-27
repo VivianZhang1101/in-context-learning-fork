@@ -54,6 +54,7 @@ def get_task_sampler(
 ):
     task_names_to_classes = {
         "linear_regression": LinearRegression,
+        "single_layer": LinearRegression,
         "sparse_linear_regression": SparseLinearRegression,
         "linear_classification": LinearClassification,
         "noisy_linear_regression": NoisyLinearRegression,
