@@ -41,11 +41,6 @@ def get_relevant_baselines(task_name):
             (NNModel, {"n_neighbors": 3}),
             (AveragingModel, {}),
         ],
-        "single_layer": [
-            (LeastSquaresModel, {}),
-            (NNModel, {"n_neighbors": 3}),
-            (AveragingModel, {}),
-        ],
         "linear_classification": [
             (NNModel, {"n_neighbors": 3}),
             (AveragingModel, {}),
@@ -96,7 +91,10 @@ class SingleLayerAttentionModel(nn.Module):
         self.n_positions = n_positions
         self.n_dims = n_dims
         self._read_in = nn.Linear(n_dims, n_embd)
-        self.positional_encoding = nn.Parameter(torch.zeros(1, 2 * n_positions, n_embd))
+        self.positional_encoding = nn.Parameter(torch.zeros(1, 4 * n_positions, n_embd))
+        # self.positional_encoding = nn.Parameter(torch.zeros(1, 2 * n_positions, n_embd))
+        # sin/cos
+        # no position encoding
         self._backbone = nn.MultiheadAttention(embed_dim=n_embd, num_heads=n_head)  # Using 1 head MultiheadAttention single layer
         self._read_out = nn.Linear(n_embd, 1)
 
@@ -137,7 +135,7 @@ class TransformerModel(nn.Module):
     def __init__(self, n_dims, n_positions, n_embd=128, n_layer=12, n_head=4):
         super(TransformerModel, self).__init__()
         configuration = GPT2Config(
-            n_positions=2 * n_positions,
+            n_positions=4 * n_positions,
             n_embd=n_embd,
             n_layer=n_layer,
             n_head=n_head,

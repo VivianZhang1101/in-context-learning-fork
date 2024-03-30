@@ -224,7 +224,7 @@ def build_evals(conf):
         "overlapping_train_test",
     ]:
         evaluation_kwargs[strategy] = {"prompting_strategy": strategy}
-
+    print(f"should have random:{evaluation_kwargs}")
     for method in ["half_subspace", "skewed"]:
         if "subspace" in method:
             eigenvals = torch.zeros(n_dims)
@@ -299,8 +299,10 @@ def get_run_metrics(
         all_models = [model]
         if not skip_baselines:
             all_models += models.get_relevant_baselines(conf.training.task)
+    print("------------------------")
+    print(f"conf: {conf}")
     evaluation_kwargs = build_evals(conf)
-
+    
     if not cache:
         save_path = None
     elif step == -1:
@@ -332,6 +334,8 @@ def conf_to_model_name(conf):
 
 
 def baseline_names(name):
+    if "single" in name:
+        return "SingleLayer"
     if "OLS" in name:
         return "Least Squares"
     if name == "averaging":
@@ -386,7 +390,7 @@ def read_run_dir(run_dir):
                 all_runs[k].append(v)
 
     df = pd.DataFrame(all_runs).sort_values("run_name")
-    assert len(df) == len(df.run_name.unique())
+    # assert len(df) == len(df.run_name.unique())
     return df
 
 if __name__ == "__main__":

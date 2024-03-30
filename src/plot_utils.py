@@ -48,7 +48,7 @@ relevant_model_names = {
 
 def basic_plot(metrics, models=None, trivial=1.0):
     fig, ax = plt.subplots(1, 1)
-
+    print(f"basic_plot: {models}")
     if models is not None:
         metrics = {k: metrics[k] for k in models}
 
@@ -63,7 +63,7 @@ def basic_plot(metrics, models=None, trivial=1.0):
     ax.set_xlabel("in-context examples")
     ax.set_ylabel("squared error")
     ax.set_xlim(-1, len(low) + 0.1)
-    ax.set_ylim(-0.1, 1.25)
+    ax.set_ylim(-0.1, 2)
 
     legend = ax.legend(loc="upper left", bbox_to_anchor=(1, 1))
     fig.set_size_inches(4, 3)
@@ -76,15 +76,16 @@ def basic_plot(metrics, models=None, trivial=1.0):
 def collect_results(run_dir, df, valid_row=None, rename_eval=None, rename_model=None):
     all_metrics = {}
     for _, r in df.iterrows():
+        
         if valid_row is not None and not valid_row(r):
             continue
-
         run_path = os.path.join(run_dir, r.task, r.run_id)
         _, conf = get_model_from_run(run_path, only_conf=True)
 
-        print(r.run_name, r.run_id)
+        print(f"run_name: {r.run_name}, id: {r.run_id}")
         metrics = get_run_metrics(run_path, skip_model_load=True)
-
+        print("------------------------")
+        print(f"metrics: {metrics}")
         for eval_name, results in sorted(metrics.items()):
             processed_results = {}
             for model_name, m in results.items():
@@ -117,4 +118,5 @@ def collect_results(run_dir, df, valid_row=None, rename_eval=None, rename_model=
             if eval_name not in all_metrics:
                 all_metrics[eval_name] = {}
             all_metrics[eval_name].update(processed_results)
+    print(f"all_metrics in collect_result: {all_metrics}")
     return all_metrics

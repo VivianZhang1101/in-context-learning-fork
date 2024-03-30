@@ -2,7 +2,7 @@ inherit:
     - base_single_layer.yaml
 
 training:
-    task: single_layer
+    task: linear_regression
     curriculum:
         points:
             start: 51
