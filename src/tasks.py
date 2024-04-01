@@ -96,8 +96,8 @@ class LinearRegression(Task):
 
     def evaluate(self, xs_b, multi_w = False):
         if multi_w:
-            self.w_b = torch.randn(self.b_size, xs_b.shape[1], self.n_dims)
-            w_b = self.w_b.to(xs_b.device)
+            w_b = torch.randn(self.b_size, xs_b.shape[1], self.n_dims)
+            w_b = w_b.to(xs_b.device)
             w_b = w_b.unsqueeze(-1)
             xs_b = xs_b.unsqueeze(-2)
             ys_b = self.scale * (xs_b @ w_b)[:, :, 0, 0]
