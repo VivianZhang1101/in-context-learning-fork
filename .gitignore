@@ -2,3 +2,4 @@
 __pycache__
 models.zip
 models
+!models/linear_regression/toy_w1_0.9/*
