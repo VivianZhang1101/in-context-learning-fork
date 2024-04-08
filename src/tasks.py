@@ -94,18 +94,9 @@ class LinearRegression(Task):
             indices = torch.randperm(len(pool_dict["w"]))[:batch_size]
             self.w_b = pool_dict["w"][indices]
 
-    def evaluate(self, xs_b, multi_w = False):
-        if multi_w:
-            self.multi_w_b = torch.randn(self.b_size, xs_b.shape[1], self.n_dims)
-            w_b = self.multi_w_b.to(xs_b.device)
-            w_b = w_b.unsqueeze(-1)
-            xs_b = xs_b.unsqueeze(-2)
-            ys_b = self.scale * (xs_b @ w_b)[:, :, 0, 0]
-            w_b = w_b.squeeze(-1)
-            return ys_b, w_b
-        else:
-            w_b = self.w_b.to(xs_b.device)
-            ys_b = self.scale * (xs_b @ w_b)[:, :, 0]
+    def evaluate(self, xs_b):
+        w_b = self.w_b.to(xs_b.device)
+        ys_b = self.scale * (xs_b @ w_b)[:, :, 0]
         return ys_b
 
     @staticmethod

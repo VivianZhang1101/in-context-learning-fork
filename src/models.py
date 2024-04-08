@@ -20,14 +20,6 @@ def build_model(conf):
             n_layer=conf.n_layer,
             n_head=conf.n_head,
         )
-    elif conf.family == "single_layer":
-        model = SingleLayerAttentionModel(
-            n_dims=conf.n_dims,
-            n_positions=conf.n_positions,
-            n_embd=conf.n_embd,
-            n_layer=conf.n_layer,
-            n_head=conf.n_head
-        )
     else:
         raise NotImplementedError
 

@@ -39,7 +39,7 @@ class GaussianSampler(DataSampler):
         self.bias = bias
         self.scale = scale
         
-    def sample_xs(self, n_points, b_size,  w1=0.9, w2=0.1, n_dims_truncated=None, seeds=None):
+    def sample_xs(self, n_points, b_size, n_dims_truncated=None, seeds=None, w1=0.9, w2=0.1):
         xs_b = torch.zeros(b_size, n_points, self.n_dims)
 
         if seeds is not None:
@@ -51,9 +51,9 @@ class GaussianSampler(DataSampler):
                 generator.manual_seed(seeds[i])
 
             for j in range(n_points):
-                sample1 = (torch.randn(self.n_dims, generator=generator) - 2) * w1 if seeds else (torch.randn(self.n_dims) - 2) * w1
-                sample2 = (torch.randn(self.n_dims, generator=generator) + 2) * w2 if seeds else (torch.randn(self.n_dims) + 2) * w2
-                xs_b[i, j] = sample1 + sample2
+                sample1 = (torch.randn(self.n_dims, generator=generator)) * w1 if seeds else (torch.randn(self.n_dims)) * w1
+                sample2 = (torch.randn(self.n_dims, generator=generator)) * w2 if seeds else (torch.randn(self.n_dims)) * w2
+                xs_b[i, j] = sample1
 
         if n_dims_truncated is not None:
             xs_b[:, :, n_dims_truncated:] = 0
