@@ -299,8 +299,8 @@ def get_run_metrics(
         all_models = [model]
         if not skip_baselines:
             all_models += models.get_relevant_baselines(conf.training.task)
-    print("------------------------")
-    print(f"conf: {conf}")
+    # print("------------------------")
+    # print(f"conf: {conf}")
     evaluation_kwargs = build_evals(conf)
     
     if not cache:

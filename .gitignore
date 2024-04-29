@@ -1,5 +1,5 @@
 .ipynb_checkpoints
 __pycache__
-models.zip
+*.zip
 models/*
 !models/linear_regression/toy_w1_0.9/*

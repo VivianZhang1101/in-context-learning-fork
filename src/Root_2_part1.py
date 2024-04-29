@@ -51,9 +51,9 @@ metrics = collect_results(run_dir, df, valid_row=valid_row)
 _, conf = get_model_from_run(run_path, only_conf=True)
 n_dims = conf.model.n_dims
 
-models = relevant_model_names[task]
-basic_plot(metrics["standard"], models=models)
-plt.show()
+# models = relevant_model_names[task]
+# basic_plot(metrics["standard"], models=models)
+# plt.show()
 
 # %% [markdown]
 # # Interactive setup
@@ -79,27 +79,6 @@ task_sampler = get_task_sampler(
 )
 
 task = task_sampler()
-xs = data_sampler.sample_xs(b_size=batch_size, n_points=conf.training.curriculum.points.end)
-ys = task.evaluate(xs)
-with torch.no_grad():
-    pred = model(xs, ys)
-metric = task.get_metric()
-loss = metric(pred, ys).numpy()
-
-sparsity = conf.training.task_kwargs.sparsity if "sparsity" in conf.training.task_kwargs else None
-baseline = {
-    "linear_regression": n_dims,
-    "sparse_linear_regression": sparsity,
-    "relu_2nn_regression": n_dims,
-    "decision_tree": 1,
-}[conf.training.task]
-
-plt.plot(loss.mean(axis=0), lw=2, label="Transformer")
-plt.axhline(baseline, ls="--", color="gray", label="zero estimator")
-plt.xlabel("# in-context examples")
-plt.ylabel("squared error")
-plt.legend()
-plt.show()
 
 # %% [markdown]
 # ### 4.1 Sample Selection / Covariate Shifts
@@ -131,8 +110,13 @@ predicted_points_random = [[] for _ in range(prompt_length)]
 xs_list = torch.load('./data/xs_list.pth')
 ys_list = torch.load('./data/ys_list.pth')
 # Generate data and perform the experiment
+i = 0
+print("start running")
 for batch_idx in tqdm(range(n_batches)):
 # for batch_idx in tqdm(range(1)):
+    i += 1
+    if i%20 == 0:
+        print(f"batch: {i}")
     xs = xs_list[batch_idx]
     ys = ys_list[batch_idx]
 

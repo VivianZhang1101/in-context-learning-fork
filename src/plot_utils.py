@@ -85,7 +85,7 @@ def collect_results(run_dir, df, valid_row=None, rename_eval=None, rename_model=
         print(f"run_name: {r.run_name}, id: {r.run_id}")
         metrics = get_run_metrics(run_path, skip_model_load=True)
         print("------------------------")
-        print(f"metrics: {metrics}")
+        # print(f"metrics: {metrics}")
         for eval_name, results in sorted(metrics.items()):
             processed_results = {}
             for model_name, m in results.items():
@@ -118,5 +118,5 @@ def collect_results(run_dir, df, valid_row=None, rename_eval=None, rename_model=
             if eval_name not in all_metrics:
                 all_metrics[eval_name] = {}
             all_metrics[eval_name].update(processed_results)
-    print(f"all_metrics in collect_result: {all_metrics}")
+    # print(f"all_metrics in collect_result: {all_metrics}")
     return all_metrics

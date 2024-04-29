@@ -128,9 +128,12 @@ xs_list = []
 ys_list = [] 
 actual_points_w_1 = [[] for _ in range(prompt_length)]
 predicted_points_w_1 = [[] for _ in range(prompt_length)]
+i = 0
 # Generate data and perform the experiment
 for _ in tqdm(range(n_batches)):
-
+    i += 1
+    if i%20 == 0:
+        print(f"batch: {i}")
     xs = data_sampler.sample_xs(b_size=batch_size, n_points=prompt_length)
     # 64 x 101 x 20
     xs_list.append(xs)
