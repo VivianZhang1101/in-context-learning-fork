@@ -224,7 +224,7 @@ def build_evals(conf):
         "overlapping_train_test",
     ]:
         evaluation_kwargs[strategy] = {"prompting_strategy": strategy}
-    print(f"should have random:{evaluation_kwargs}")
+    # print(f"should have random:{evaluation_kwargs}")
     for method in ["half_subspace", "skewed"]:
         if "subspace" in method:
             eigenvals = torch.zeros(n_dims)
