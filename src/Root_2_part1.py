@@ -101,7 +101,8 @@ def R_Square_Error(ys, pred):
 
 # %%
 n_batches = 100
-prompt_length = 2*conf.training.curriculum.points.end-1
+# prompt_length = 2*conf.training.curriculum.points.end-1
+prompt_length = 78
 
 # %%
 actual_points_random = [[] for _ in range(prompt_length)]
@@ -113,9 +114,9 @@ ys_list = torch.load('./data/ys_list.pth')
 i = 0
 print("start running")
 for batch_idx in tqdm(range(n_batches)):
-# for batch_idx in tqdm(range(1)):
+    print(batch_idx)
     i += 1
-    if i%20 == 0:
+    if i%10 == 0:
         print(f"batch: {i}")
     xs = xs_list[batch_idx]
     ys = ys_list[batch_idx]
@@ -146,21 +147,21 @@ for batch_idx in tqdm(range(n_batches)):
         actual_points_random[j].extend(ys[:, j])
         predicted_points_random[j].extend(pred[:, j])
 
-R_square_values_w_random_10p = []
+    R_square_values_w_random_10p = []
 
-for point_idx in range(prompt_length):
-    actual = torch.tensor(actual_points_random[point_idx])
-    predicted = torch.tensor(predicted_points_random[point_idx])
-    R_square = R_Square_Error(actual, predicted)
-    R_square_values_w_random_10p.append(R_square)
+    for point_idx in range(prompt_length):
+        actual = torch.tensor(actual_points_random[point_idx])
+        predicted = torch.tensor(predicted_points_random[point_idx])
+        R_square = R_Square_Error(actual, predicted)
+        R_square_values_w_random_10p.append(R_square)
 
-# %%
+    # %%
 
-# %%
-with open('./data/R_square_values_w_random_10p.txt', 'w') as f:
-    for value in R_square_values_w_random_10p:
-        f.write(f"{value}\n")
-print("Finished R_square_values_w_random_10p")
+    # %%
+    with open('./data/R_square_values_w_random_10p.txt', 'w') as f:
+        for value in R_square_values_w_random_10p:
+            f.write(f"{value}\n")
+    print(f"Batch {batch_idx}: Finished R_square_values_w_random_10p")
 
 
 

@@ -16,6 +16,7 @@ from plot_utils import basic_plot, collect_results, relevant_model_names
 # %matplotlib inline
 # %load_ext autoreload
 # %autoreload 2
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 sns.set_theme('notebook', 'darkgrid')
 palette = sns.color_palette('colorblind')
@@ -102,7 +103,8 @@ def R_Square_Error(ys, pred):
 
 # %%
 n_batches = 100
-prompt_length = 2*conf.training.curriculum.points.end-1
+# prompt_length = 2*conf.training.curriculum.points.end-1
+prompt_length = 78
 
 # %%
 actual_points_random = [[] for _ in range(prompt_length)]
@@ -113,9 +115,10 @@ ys_list = torch.load('./data/ys_list.pth')
 i = 0
 print("start running")
 for batch_idx in tqdm(range(n_batches)):
+    print(batch_idx)
     i += 1
-    if i%20 == 0:
-        print(f"batch: {i}")
+    # if i%20 == 0:
+    #     print(f"batch: {i}")
 # for batch_idx in tqdm(range(1)):
     xs = xs_list[batch_idx]
     ys = ys_list[batch_idx]
@@ -145,19 +148,19 @@ for batch_idx in tqdm(range(n_batches)):
         actual_points_random[j].extend(ys[:, j])
         predicted_points_random[j].extend(pred[:, j])
 
-R_square_values_w_random_20p = []
+    R_square_values_w_random_20p = []
 
-for point_idx in range(prompt_length):
-    actual = torch.tensor(actual_points_random[point_idx])
-    predicted = torch.tensor(predicted_points_random[point_idx])
-    R_square = R_Square_Error(actual, predicted)
-    R_square_values_w_random_20p.append(R_square)
+    for point_idx in range(prompt_length):
+        actual = torch.tensor(actual_points_random[point_idx])
+        predicted = torch.tensor(predicted_points_random[point_idx])
+        R_square = R_Square_Error(actual, predicted)
+        R_square_values_w_random_20p.append(R_square)
 
-# %%
+    # %%
 
-with open('./data/R_square_values_w_random_20p.txt', 'w') as f:
-    for value in R_square_values_w_random_20p:
-        f.write(f"{value}\n")
-print("Finished R_square_values_w_random_20p")
+    with open('./data/R_square_values_w_random_20p.txt', 'w') as f:
+        for value in R_square_values_w_random_20p:
+            f.write(f"{value}\n")
+    print(f"Batch {batch_idx}: R_square_values_w_random_20p")
 
 # %%
