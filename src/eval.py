@@ -334,8 +334,6 @@ def conf_to_model_name(conf):
 
 
 def baseline_names(name):
-    if "single" in name:
-        return "SingleLayer"
     if "OLS" in name:
         return "Least Squares"
     if name == "averaging":
@@ -343,15 +341,6 @@ def baseline_names(name):
     if "NN" in name:
         k = name.split("_")[1].split("=")[1]
         return f"{k}-Nearest Neighbors"
-    if "lasso" in name:
-        alpha = name.split("_")[1].split("=")[1]
-        return f"Lasso (alpha={alpha})"
-    if "gd" in name:
-        return "2-layer NN, GD"
-    if "decision_tree" in name:
-        return "Greedy Tree Learning"
-    if "xgboost" in name:
-        return "XGBoost"
     return name
 
 

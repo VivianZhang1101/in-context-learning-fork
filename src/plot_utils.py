@@ -16,33 +16,7 @@ relevant_model_names = {
         "Least Squares",
         "3-Nearest Neighbors",
         "Averaging",
-    ],
-    "single_layer": [
-        "SingleLayer",
-        "Least Squares",
-        "3-Nearest Neighbors",
-        "Averaging",
-    ],
-    "sparse_linear_regression": [
-        "Transformer",
-        "Least Squares",
-        "3-Nearest Neighbors",
-        "Averaging",
-        "Lasso (alpha=0.01)",
-    ],
-    "decision_tree": [
-        "Transformer",
-        "3-Nearest Neighbors",
-        "2-layer NN, GD",
-        "Greedy Tree Learning",
-        "XGBoost",
-    ],
-    "relu_2nn_regression": [
-        "Transformer",
-        "Least Squares",
-        "3-Nearest Neighbors",
-        "2-layer NN, GD",
-    ],
+    ]
 }
 
 

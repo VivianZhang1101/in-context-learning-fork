@@ -14,7 +14,7 @@ from funcy import merge
 
 
 model_schema = {
-    "family": merge(tstring, allowed(["gpt2", "lstm","single_layer"])),
+    "family": merge(tstring, allowed(["gpt2"])),
     "n_positions": merge(tinteger, required),  # maximum context length
     "n_dims": merge(tinteger, required),  # latent dimension
     "n_embd": merge(tinteger, required),
@@ -35,12 +35,7 @@ curriculum_schema = {
 }
 
 TASK_LIST = [
-    "linear_regression",
-    "single_layer",
-    "sparse_linear_regression",
-    "linear_classification",
-    "relu_2nn_regression",
-    "decision_tree",
+    "linear_regression"
 ]
 
 training_schema = {
